@@ -15,7 +15,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
@@ -26,4 +25,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideMovieDao(db: FlixitAppDatabase) = db.getMovieDao()
+
+    @Singleton
+    @Provides
+    fun provideLocationDao(db: FlixitAppDatabase) = db.getLocationDao()
 }

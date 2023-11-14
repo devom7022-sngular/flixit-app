@@ -1,4 +1,4 @@
-package com.sngular.flixitApp.utils.extension
+package com.sngular.flixitApp.util
 
 import android.app.Activity
 import android.content.Context

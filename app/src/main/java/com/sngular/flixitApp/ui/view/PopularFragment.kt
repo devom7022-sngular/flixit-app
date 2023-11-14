@@ -19,8 +19,8 @@ import com.sngular.flixitApp.ui.viewmodel.MovieViewModel
 
 class PopularFragment : Fragment() {
 
-    private var _binding: FragmentPopularBinding? = null;
-    private val binding get() = _binding!!;
+    private var _binding: FragmentPopularBinding? = null
+    private val binding get() = _binding!!
     private lateinit var moviesAdapter: MoviesAdapter
 
     private val movieViewModel: MovieViewModel by activityViewModels()

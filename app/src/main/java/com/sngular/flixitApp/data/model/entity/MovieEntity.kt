@@ -23,8 +23,7 @@ class MovieEntity(
     @ColumnInfo(name = "releaseDate") val releaseDate: String?,
     @ColumnInfo(name = "voteAverage") val voteAverage: Double?,
     @ColumnInfo(name = "voteCount") val voteCount: Int?
-) {
-}
+)
 
 fun MovieBo.toDatabase() = MovieEntity(
     id = id, title = title, video = video,

@@ -1,22 +1,22 @@
 package com.sngular.flixitApp.domain.model.bo
 
+import com.sngular.flixitApp.data.model.dto.LocationDto
+import com.sngular.flixitApp.data.model.entity.LocationEntity
+
 data class LocationBo(
-    val id: Int?,
-    val long: Double,
-    val lat: Double,
+    val long: String,
+    val lat: String,
     val register: String,
 )
 
-/*fun LocationDto.toBo() = LocationBo(
-    id,
-    long,
-    lat,
-    register,
+fun LocationDto.toBo() = LocationBo(
+    long!!,
+    lat!!,
+    register!!,
 )
 
 fun LocationEntity.toBo() = LocationBo(
-    id,
-    long,
-    lat,
-    register,
-)*/
+    long!!,
+    lat.toString(),
+    register!!,
+)
