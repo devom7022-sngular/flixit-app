@@ -1,7 +1,6 @@
 package com.sngular.flixitApp.domain.usecase
 
 import com.sngular.flixitApp.data.repository.MovieRepository
-import com.sngular.flixitApp.data.model.entity.toDatabase
 import com.sngular.flixitApp.domain.model.bo.MovieBo
 
 import javax.inject.Inject
