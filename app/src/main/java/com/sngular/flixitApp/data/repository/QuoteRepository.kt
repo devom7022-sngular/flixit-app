@@ -4,7 +4,7 @@ import com.sngular.flixitApp.data.model.dao.MovieDao
 import com.sngular.flixitApp.data.model.entity.MovieEntity
 import com.sngular.flixitApp.data.repository.remote.MovieRemoteRepository
 import com.sngular.flixitApp.domain.model.bo.MovieBo
-import com.sngular.flixitApp.domain.model.bo.toDomain
+import com.sngular.flixitApp.domain.model.bo.toBo
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
@@ -12,7 +12,7 @@ class MovieRepository @Inject constructor(
     private val movieDao: MovieDao
 ) {
     suspend fun getAllPopularMovies(): List<MovieBo> =
-        remote.getPopularMovies().results!!.map { it.toDomain() }
+        remote.getPopularMovies().results!!.map { it.toBo() }
 
     //    suspend fun getAllMoviesFromDB(): List<Movie> = MovieDao.getAllMovies().map { it.toDomain() }
     suspend fun insertMovies(movies: List<MovieEntity>) {

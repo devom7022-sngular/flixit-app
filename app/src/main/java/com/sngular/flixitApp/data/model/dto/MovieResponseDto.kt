@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.sngular.flixitApp.data.model.dto.MovieDto
 
 
-class MoviesResponseDto(
+class MovieResponseDto(
     @SerializedName("page") var page: Int = 0,
     @SerializedName("results") var results: List<MovieDto>? = null,
     @SerializedName("total_pages") var totalPages: Int = 0,

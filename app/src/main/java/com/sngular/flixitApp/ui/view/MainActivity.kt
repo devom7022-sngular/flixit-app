@@ -3,6 +3,7 @@ package com.sngular.flixitApp.ui.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.GridLayout
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -10,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.sngular.flixitApp.R
 import com.sngular.flixitApp.databinding.ActivityMainBinding
 import com.sngular.flixitApp.ui.viewmodel.MovieViewModel
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val movieViewModel: MovieViewModel by viewModels()
+//    private val movieViewModel: MovieViewModel by viewModels()
 
     private lateinit var navController: NavController
 
@@ -33,17 +35,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.btmNavView.setupWithNavController(navController)
 
-        //setupWithNavController(binding.btmNavView, navController)
-
-        movieViewModel.onCreate()
+        /*movieViewModel.onCreate()
 
         movieViewModel.popularMovies.observe(this) {
             Log.i("lista", it.toString())
             //binding.tvMovie.text = it.toString()
-        }
+        }*/
 
-        movieViewModel.isLoading.observe(this) {
+        /*movieViewModel.isLoading.observe(this) {
             //binding.pbLoading.isVisible = it
-        }
+        }*/
     }
 }
