@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/popular_nav">
+
+    <fragment
+        android:id="@+id/popular_nav"
+        android:name="com.sngular.flixitApp.ui.view.PopularFragment"
+        android:label="fragment_popular"
+        tools:layout="@layout/fragment_popular" />
+    <fragment
+        android:id="@+id/rating_nav"
+        android:name="com.sngular.flixitApp.ui.view.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/recommend_nav"
+        android:name="com.sngular.flixitApp.ui.view.RecommendFragment"
+        android:label="fragment_recommend"
+        tools:layout="@layout/fragment_recommend" />
+    <fragment
+        android:id="@+id/location_nav"
+        android:name="com.sngular.flixitApp.ui.view.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location" />
+    <fragment
+        android:id="@+id/gallery_nav"
+        android:name="com.sngular.flixitApp.ui.view.GalleryFragment"
+        android:label="fragment_gallery"
+        tools:layout="@layout/fragment_gallery" />
+    <fragment
+        android:id="@+id/profile_nav"
+        android:name="com.sngular.flixitApp.ui.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/upload_nav"
+        android:name="com.sngular.flixitApp.ui.view.UploadFragment"
+        android:label="fragment_upload"
+        tools:layout="@layout/fragment_upload" />
+</navigation>
