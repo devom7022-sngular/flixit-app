@@ -8,18 +8,6 @@ import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(private val repository: MovieRepository) {
     suspend operator fun invoke(): List<MovieBo> {
-        val movies = repository.getAllPopularMovies()
-        return if (movies.isNotEmpty()) {
-            repository.clearMovies()
-            repository.insertMovies(movies.map { it.toDatabase() })
-            movies
-        } else {
-            emptyList()
-            //repository.getAllMoviesFromDB()
-        }
-
-
+        return repository.getAllPopularMovies()
     }
-
-    //suspend operator fun invoke(): List<MovieBo> = repository.getAllMoviesFromApi()
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
-class MovieRemoteRepository @Inject constructor(private val api: MovieApiClient){
+class MovieRemoteRepository @Inject constructor(private val api: MovieApiClient) {
 
     suspend fun getPopularMovies(): MovieResponseDto {
         return withContext(Dispatchers.IO) {

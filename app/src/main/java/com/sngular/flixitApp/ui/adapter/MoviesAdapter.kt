@@ -38,6 +38,7 @@ class MoviesAdapter(val context: Context, var list: List<MovieBo>) :
             .into(holder.ivImage)
         holder.tvTitle.text = movie.title
         holder.tvDate.text = movie.releaseDate
+
     }
 
     override fun getItemCount(): Int {
