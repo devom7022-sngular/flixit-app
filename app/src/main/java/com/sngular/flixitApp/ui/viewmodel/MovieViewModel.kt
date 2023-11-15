@@ -15,17 +15,31 @@ class MovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val popularMovies = MutableLiveData<List<MovieBo>>()
+    val rateMovies = MutableLiveData<List<MovieBo>>()
+    val upcomingMovies = MutableLiveData<List<MovieBo>>()
     val isLoading = MutableLiveData<Boolean>()
 
     fun onCreate() {
         viewModelScope.launch {
             isLoading.postValue(true)
-            val result = getMoviesUseCase()
+            val popular = getMoviesUseCase.getAllPopularMovies()
+            val rated = getMoviesUseCase.getAllRateMovies()
+            val upcoming = getMoviesUseCase.getAllUpcomingMovies()
 
-            if (result.isNotEmpty()) {
-                popularMovies.postValue(result)
-                isLoading.postValue(false)
+            if (popular.isNotEmpty()) {
+                popularMovies.postValue(popular)
             }
+
+            if (rated.isNotEmpty()) {
+                rateMovies.postValue(popular)
+            }
+
+            if (upcoming.isNotEmpty()) {
+                upcomingMovies.postValue(popular)
+
+            }
+
+            isLoading.postValue(false)
         }
     }
 }

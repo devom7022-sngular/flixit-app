@@ -1,9 +1,7 @@
 package com.sngular.flixitApp.domain.model.bo
 
 import android.os.Parcelable
-import com.sngular.flixitApp.data.model.dto.LocationDto
 import com.sngular.flixitApp.data.model.entity.LocationEntity
-import com.sngular.flixitApp.data.model.entity.MovieEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

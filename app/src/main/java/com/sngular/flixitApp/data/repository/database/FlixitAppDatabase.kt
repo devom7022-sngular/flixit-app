@@ -5,11 +5,15 @@ import androidx.room.RoomDatabase
 import com.sngular.flixitApp.data.model.dao.LocationDao
 import com.sngular.flixitApp.data.model.dao.MovieDao
 import com.sngular.flixitApp.data.model.entity.LocationEntity
-import com.sngular.flixitApp.data.model.entity.MovieEntity
+import com.sngular.flixitApp.data.model.entity.PopularMovieEntity
+import com.sngular.flixitApp.data.model.entity.RateMovieEntity
+import com.sngular.flixitApp.data.model.entity.UpcomingMovieEntity
 
 @Database(
     entities = [
-        MovieEntity::class,
+        PopularMovieEntity::class,
+        RateMovieEntity::class,
+        UpcomingMovieEntity::class,
         LocationEntity::class],
     version = 1
 )

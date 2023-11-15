@@ -6,7 +6,15 @@ import com.sngular.flixitApp.domain.model.bo.MovieBo
 import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(private val repository: MovieRepository) {
-    suspend operator fun invoke(): List<MovieBo> {
+    suspend fun getAllPopularMovies(): List<MovieBo> {
         return repository.getAllPopularMovies()
+    }
+
+    suspend fun getAllRateMovies(): List<MovieBo> {
+        return repository.getAllRateMovies()
+    }
+
+    suspend fun getAllUpcomingMovies(): List<MovieBo> {
+        return repository.getAllUpcomingMovies()
     }
 }

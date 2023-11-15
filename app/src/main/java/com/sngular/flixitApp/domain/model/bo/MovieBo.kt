@@ -1,7 +1,9 @@
 package com.sngular.flixitApp.domain.model.bo
 
 import android.os.Parcelable
-import com.sngular.flixitApp.data.model.entity.MovieEntity
+import com.sngular.flixitApp.data.model.entity.PopularMovieEntity
+import com.sngular.flixitApp.data.model.entity.RateMovieEntity
+import com.sngular.flixitApp.data.model.entity.UpcomingMovieEntity
 
 import kotlinx.parcelize.Parcelize
 
@@ -20,9 +22,9 @@ data class MovieBo(
     val releaseDate: String?,
     val voteAverage: Double?,
     val voteCount: Int?
-) : Parcelable, BaseBo<MovieEntity> {
-    override fun toEntity(): MovieEntity {
-        return MovieEntity(
+) : Parcelable, BaseMovieBo<MovieBo> {
+    override fun toPopularEntity(): PopularMovieEntity {
+        return PopularMovieEntity(
             id, title, video!!, adult!!,
             backdropPath,
             originalLanguage!!,
@@ -35,4 +37,52 @@ data class MovieBo(
             voteCount
         )
     }
+
+    override fun toRateEntity(): RateMovieEntity {
+        return RateMovieEntity(
+            id, title, video!!, adult!!,
+            backdropPath,
+            originalLanguage!!,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            voteAverage,
+            voteCount
+        )
+    }
+
+    override fun toUpcomingEntity(): UpcomingMovieEntity {
+        return UpcomingMovieEntity(
+            id, title, video!!, adult!!,
+            backdropPath,
+            originalLanguage!!,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            voteAverage,
+            voteCount
+        )
+    }
+
+
+    override fun toBo(): MovieBo {
+        return MovieBo(
+            id, title, video!!, adult!!,
+            backdropPath,
+            originalLanguage!!,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            voteAverage,
+            voteCount
+        )
+    }
+
+
 }

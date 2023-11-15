@@ -6,13 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.PopularFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPopularMovies"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/tvPopularTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Populares"
+        app:layout_constraintBottom_toTopOf="@id/rvPopularMovies"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPopularMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/tvRateTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPopularTitle" />
+
+    <TextView
+        android:id="@+id/tvRateTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Top Rate"
+        app:layout_constraintBottom_toTopOf="@id/rvRateMovies"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvPopularMovies" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRateMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/tvRateTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUpcomingTitle" />
+
+    <TextView
+        android:id="@+id/tvUpcomingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upcoming"
+        app:layout_constraintBottom_toTopOf="@id/rvUpcomingMovies"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvRateMovies" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUpcomingMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUpcomingTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

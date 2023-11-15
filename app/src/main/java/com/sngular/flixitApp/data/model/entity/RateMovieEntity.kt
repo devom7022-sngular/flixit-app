@@ -3,12 +3,11 @@ package com.sngular.flixitApp.data.model.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import com.sngular.flixitApp.domain.model.bo.MovieBo
 
 
-@Entity(tableName = "movie_table")
-data class MovieEntity(
+@Entity(tableName = "rate_table")
+data class RateMovieEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id") val id: Int? = 0,
     @ColumnInfo(name = "title") val title: String? = "",

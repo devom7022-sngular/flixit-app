@@ -2,8 +2,6 @@ package com.sngular.flixitApp.data.model.dto
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.sngular.flixitApp.data.model.entity.BaseEntity
-import com.sngular.flixitApp.data.model.entity.MovieEntity
 import com.sngular.flixitApp.domain.model.bo.MovieBo
 import kotlinx.parcelize.Parcelize
 

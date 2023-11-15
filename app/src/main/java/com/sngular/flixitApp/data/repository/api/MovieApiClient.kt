@@ -10,4 +10,14 @@ interface MovieApiClient {
     suspend fun getPopularMovies(
         @Query("api_key") apiKey: String
     ): Response<MovieResponseDto>
+
+    @GET("top_rated")
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponseDto>
+
+    @GET("upcoming")
+    suspend fun getUpcomingMovies(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponseDto>
 }
