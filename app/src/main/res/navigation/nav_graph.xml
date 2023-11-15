@@ -9,17 +9,16 @@
         android:id="@+id/popular_nav"
         android:name="com.sngular.flixitApp.ui.view.PopularFragment"
         android:label="nav_popular"
-        tools:layout="@layout/fragment_popular" />
+        tools:layout="@layout/fragment_popular">
+        <action
+            android:id="@+id/action_popular_nav_to_detail_nav"
+            app:destination="@id/detail_nav" />
+    </fragment>
     <fragment
-        android:id="@+id/rating_nav"
-        android:name="com.sngular.flixitApp.ui.view.RatingFragment"
-        android:label="nav_rating"
-        tools:layout="@layout/fragment_rating" />
-    <fragment
-        android:id="@+id/recommend_nav"
-        android:name="com.sngular.flixitApp.ui.view.RecommendFragment"
-        android:label="nav_recommend"
-        tools:layout="@layout/fragment_recommend" />
+        android:id="@+id/detail_nav"
+        android:name="com.sngular.flixitApp.ui.view.DetailFragment"
+        android:label="nav_detail"
+        tools:layout="@layout/fragment_detail" />
     <fragment
         android:id="@+id/location_nav"
         android:name="com.sngular.flixitApp.ui.view.LocationFragment"

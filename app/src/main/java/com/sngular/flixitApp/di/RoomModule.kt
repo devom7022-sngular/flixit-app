@@ -24,7 +24,15 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideMovieDao(db: FlixitAppDatabase) = db.getMovieDao()
+    fun providePopularMovieDao(db: FlixitAppDatabase) = db.getPopularMovieDao()
+
+    @Singleton
+    @Provides
+    fun provideRateMovieDao(db: FlixitAppDatabase) = db.getRateMovieDao()
+
+    @Singleton
+    @Provides
+    fun provideUpcomingMovieDao(db: FlixitAppDatabase) = db.getUpcomingDao()
 
     @Singleton
     @Provides

@@ -1,40 +1,48 @@
 package com.sngular.flixitApp.data.repository.local
 
-import com.sngular.flixitApp.data.model.dao.MovieDao
+import com.sngular.flixitApp.data.model.dao.PopularMovieDao
+import com.sngular.flixitApp.data.model.dao.RateMovieDao
+import com.sngular.flixitApp.data.model.dao.UpcomingMovieDao
 import com.sngular.flixitApp.data.model.entity.PopularMovieEntity
 import com.sngular.flixitApp.data.model.entity.RateMovieEntity
 import com.sngular.flixitApp.data.model.entity.UpcomingMovieEntity
 import javax.inject.Inject
 
-class MovieLocalRepository @Inject constructor(private val movieDao: MovieDao) {
+class MovieLocalRepository @Inject constructor(
+    private val popularMovieDao: PopularMovieDao,
+    private val rateMovieDao: RateMovieDao,
+    private val upcomingMovieDao: UpcomingMovieDao
+) {
 
-    suspend fun getAllPopularMoviesLocal(): List<PopularMovieEntity> = movieDao.getAllPopularMovies()
+    suspend fun getAllPopularMoviesLocal(): List<PopularMovieEntity> =
+        popularMovieDao.getAllPopularMovies()
 
     suspend fun insertAllPopularMovies(movies: List<PopularMovieEntity>) {
-        movieDao.insertAllPopularMovies(movies)
+        popularMovieDao.insertAllPopularMovies(movies)
     }
 
     suspend fun clearAllPopularMovies() {
-        movieDao.deleteAllPopularMovies()
+        popularMovieDao.deleteAllPopularMovies()
     }
 
-    suspend fun getAllRateMoviesLocal(): List<RateMovieEntity> = movieDao.getAllRateMovies()
+    suspend fun getAllRateMoviesLocal(): List<RateMovieEntity> = rateMovieDao.getAllRateMovies()
 
     suspend fun insertAllRateMovies(movies: List<RateMovieEntity>) {
-        movieDao.insertAllRateMovies(movies)
+        rateMovieDao.insertAllRateMovies(movies)
     }
 
     suspend fun clearAllRateMovies() {
-        movieDao.deleteAllRateMovies()
+        rateMovieDao.deleteAllRateMovies()
     }
 
-    suspend fun getAllUpcomingMoviesLocal(): List<UpcomingMovieEntity> = movieDao.getAllUpcomingMovies()
+    suspend fun getAllUpcomingMoviesLocal(): List<UpcomingMovieEntity> =
+        upcomingMovieDao.getAllUpcomingMovies()
 
     suspend fun insertAllUpcomingMovies(movies: List<UpcomingMovieEntity>) {
-        movieDao.insertAllUpcomingMovies(movies)
+        upcomingMovieDao.insertAllUpcomingMovies(movies)
     }
 
     suspend fun clearAllUpcomingMovies() {
-        movieDao.deleteAllUpcomingMovies()
+        upcomingMovieDao.deleteAllUpcomingMovies()
     }
 }

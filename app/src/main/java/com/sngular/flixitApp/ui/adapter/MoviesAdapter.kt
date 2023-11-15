@@ -1,20 +1,27 @@
 package com.sngular.flixitApp.ui.adapter
 
 import android.content.Context
+import android.text.Layout.Directions
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sngular.flixitApp.R
 import com.sngular.flixitApp.domain.model.bo.MovieBo
+import com.sngular.flixitApp.ui.view.PopularFragment
 import com.sngular.flixitApp.util.Constants
 
-class MoviesAdapter(val context: Context, var list: List<MovieBo>) :
+class MoviesAdapter(
+    val context: Context,
+    var list: List<MovieBo>,
+    private val onItemClicked: (MovieBo) -> Unit
+) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cvMovie = itemView.findViewById(R.id.cvMovie) as CardView
@@ -38,6 +45,9 @@ class MoviesAdapter(val context: Context, var list: List<MovieBo>) :
         holder.tvTitle.text = movie.title
         holder.tvDate.text = movie.releaseDate
 
+        holder.cvMovie.setOnClickListener {
+            onItemClicked(movie)
+        }
     }
 
     override fun getItemCount(): Int {
