@@ -37,4 +37,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideLocationDao(db: FlixitAppDatabase) = db.getLocationDao()
+
+    @Singleton
+    @Provides
+    fun providePersonDao(db: FlixitAppDatabase) = db.getPersonDao()
 }
