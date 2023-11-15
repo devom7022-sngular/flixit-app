@@ -1,8 +1,11 @@
 package com.sngular.flixitApp.domain.model.bo
 
+import android.os.Parcelable
 import com.sngular.flixitApp.data.model.entity.MovieEntity
-import com.sngular.flixitApp.data.model.dto.MovieDto
 
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MovieBo(
     val id: Int?,
     val title: String?,
@@ -17,30 +20,19 @@ data class MovieBo(
     val releaseDate: String?,
     val voteAverage: Double?,
     val voteCount: Int?
-)
-
-fun MovieDto.toBo() = MovieBo(
-    id, title, video!!, adult!!,
-    backdropPath,
-    originalLanguage!!,
-    originalTitle,
-    overview,
-    popularity,
-    posterPath,
-    releaseDate,
-    voteAverage,
-    voteCount
-)
-
-fun MovieEntity.toBo() = MovieBo(
-    id, title, video, adult,
-    backdropPath,
-    originalLanguage!!,
-    originalTitle,
-    overview,
-    popularity,
-    posterPath,
-    releaseDate,
-    voteAverage,
-    voteCount
-)
+) : Parcelable, BaseBo<MovieEntity> {
+    override fun toEntity(): MovieEntity {
+        return MovieEntity(
+            id, title, video!!, adult!!,
+            backdropPath,
+            originalLanguage!!,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            voteAverage,
+            voteCount
+        )
+    }
+}

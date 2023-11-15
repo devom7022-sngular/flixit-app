@@ -1,10 +1,8 @@
 package com.sngular.flixitApp.data.repository
 
-import com.sngular.flixitApp.data.model.entity.toDatabase
 import com.sngular.flixitApp.data.repository.local.MovieLocalRepository
 import com.sngular.flixitApp.data.repository.remote.MovieRemoteRepository
 import com.sngular.flixitApp.domain.model.bo.MovieBo
-import com.sngular.flixitApp.domain.model.bo.toBo
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
@@ -23,7 +21,7 @@ class MovieRepository @Inject constructor(
         if (movies.isEmpty()) {
             local.clearMovies()
             movies = getAllPopularRemoteMovies()
-            local.insertMovies(movies.map { it.toDatabase() })
+            local.insertMovies(movies.map { it.toEntity() })
         }
         return movies
     }

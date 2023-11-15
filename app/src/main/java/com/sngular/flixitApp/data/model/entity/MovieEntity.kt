@@ -8,7 +8,7 @@ import com.sngular.flixitApp.domain.model.bo.MovieBo
 
 
 @Entity(tableName = "movie_table")
-class MovieEntity(
+data class MovieEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id") val id: Int? = 0,
     @ColumnInfo(name = "title") val title: String? = "",
@@ -23,18 +23,20 @@ class MovieEntity(
     @ColumnInfo(name = "releaseDate") val releaseDate: String?,
     @ColumnInfo(name = "voteAverage") val voteAverage: Double?,
     @ColumnInfo(name = "voteCount") val voteCount: Int?
-)
-
-fun MovieBo.toDatabase() = MovieEntity(
-    id = id, title = title, video = video,
-    adult = adult,
-    backdropPath = backdropPath,
-    originalLanguage = originalLanguage,
-    originalTitle = originalTitle,
-    overview = overview,
-    popularity = popularity,
-    posterPath = posterPath,
-    releaseDate = releaseDate,
-    voteAverage = voteAverage,
-    voteCount = voteCount
-)
+) : BaseEntity<MovieBo> {
+    override fun toBo(): MovieBo {
+        return MovieBo(
+            id = id, title = title, video = video,
+            adult = adult,
+            backdropPath = backdropPath,
+            originalLanguage = originalLanguage,
+            originalTitle = originalTitle,
+            overview = overview,
+            popularity = popularity,
+            posterPath = posterPath,
+            releaseDate = releaseDate,
+            voteAverage = voteAverage,
+            voteCount = voteCount
+        )
+    }
+}

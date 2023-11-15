@@ -1,22 +1,23 @@
 package com.sngular.flixitApp.domain.model.bo
 
+import android.os.Parcelable
 import com.sngular.flixitApp.data.model.dto.LocationDto
 import com.sngular.flixitApp.data.model.entity.LocationEntity
+import com.sngular.flixitApp.data.model.entity.MovieEntity
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class LocationBo(
     val long: String,
     val lat: String,
     val register: String,
-)
+) : Parcelable, BaseBo<LocationEntity> {
+    override fun toEntity(): LocationEntity {
+        return LocationEntity(
+            long = long,
+            lat = lat,
+            register = register,
+        )
+    }
 
-fun LocationDto.toBo() = LocationBo(
-    long!!,
-    lat!!,
-    register!!,
-)
-
-fun LocationEntity.toBo() = LocationBo(
-    long!!,
-    lat.toString(),
-    register!!,
-)
+}
