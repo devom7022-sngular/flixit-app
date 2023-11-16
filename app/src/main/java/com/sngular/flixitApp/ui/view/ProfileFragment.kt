@@ -1,5 +1,6 @@
 package com.sngular.flixitApp.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,13 +34,20 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         personViewModel.onCreate()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         personViewModel.personData.observe(requireActivity()) {
             val scope = CoroutineScope(Dispatchers.Main)
             scope.launch {
                 val person = it[0]
 
                 Log.i("personModel", person.toString())
-                Glide.with(requireView()).load("${Constants.BASE_URL_IMAGE}${person.profilePath}")
+                Glide.with(view)
+                    .load("${Constants.BASE_URL_IMAGE}${person.profilePath}")
                     .apply(RequestOptions().override(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT))
                     .into(binding.ivPoster)
 
@@ -50,8 +58,10 @@ class ProfileFragment : Fragment() {
 
             }
         }
+    }
 
-        return binding.root
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onDestroyView() {

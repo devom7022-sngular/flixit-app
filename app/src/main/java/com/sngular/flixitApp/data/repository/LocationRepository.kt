@@ -17,7 +17,7 @@ class LocationRepository @Inject constructor(
         local.getLocations().map { it.toBo() }
 
     suspend fun getAllLocations(): List<LocationBo> {
-        var locations = getAllLocalLocations()
+        var locations = getAllRemoteLocations()
         if (locations.isEmpty()) {
             local.clearLocations()
             locations = getAllRemoteLocations()

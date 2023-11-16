@@ -1,7 +1,13 @@
 package com.sngular.flixitApp.ui.view
 
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
@@ -14,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-//    private val movieViewModel: MovieViewModel by viewModels()
-
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +31,5 @@ class MainActivity : AppCompatActivity() {
 
         binding.btmNavView.setupWithNavController(navController)
 
-        /*movieViewModel.onCreate()
-
-        movieViewModel.popularMovies.observe(this) {
-            Log.i("lista", it.toString())
-            //binding.tvMovie.text = it.toString()
-        }*/
-
-        /*movieViewModel.isLoading.observe(this) {
-            //binding.pbLoading.isVisible = it
-        }*/
     }
 }

@@ -36,11 +36,11 @@ class DetailFragment : Fragment() {
                 binding.tvRelease.text = movieDetail.releaseDate
                 binding.tvResumeOverview.text = movieDetail.overview
 
-                Glide.with(requireView()).load("${Constants.BASE_URL_IMAGE}${movieDetail.posterPath}")
+                Glide.with(requireActivity()).load("${Constants.BASE_URL_IMAGE}${movieDetail.posterPath}")
                     .apply(RequestOptions().override(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT))
                     .into(binding.ivPoster)
 
-                Glide.with(this).load("${Constants.BASE_URL_IMAGE}${movieDetail.backdropPath}")
+                Glide.with(requireActivity()).load("${Constants.BASE_URL_IMAGE}${movieDetail.backdropPath}")
                     .apply(RequestOptions())
                     .into(binding.ivHeader)
 

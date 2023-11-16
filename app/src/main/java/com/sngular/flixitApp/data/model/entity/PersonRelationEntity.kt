@@ -15,17 +15,16 @@ class PersonRelationEntity {
             ),
             ForeignKey(
                 entity = KnowForEntity::class,
-                parentColumns = ["xId"],
-                childColumns = ["FK_X"],
+                parentColumns = ["KnownForId"],
+                childColumns = ["FK_B"],
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
             ),
         ],
-        primaryKeys = ["FK_A","FK_X","FK_Y"]
+        primaryKeys = ["FK_A", "FK_B"]
     )
     data class AXYMap(
         val FK_A: Long,
         val FK_X: Long,
-        val FK_Y: Long
     )
 }
