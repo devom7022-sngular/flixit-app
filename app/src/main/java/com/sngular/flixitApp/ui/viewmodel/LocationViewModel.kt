@@ -1,10 +1,10 @@
 package com.sngular.flixitApp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sngular.flixitApp.domain.model.bo.LocationBo
-import com.sngular.flixitApp.domain.model.bo.MovieBo
 import com.sngular.flixitApp.domain.usecase.GetLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,14 +18,11 @@ class LocationViewModel @Inject constructor(
 
     fun onCreate() {
         viewModelScope.launch {
-
-            val result = getLocationUseCase()
-            if (result.isNotEmpty()) {
-                locations.postValue(result)
-            }
+            getLocationUseCase.getLocations(callback = {
+                Log.i("Mi respusta", it.toString())
+                locations.postValue(it)
+            })
         }
-
-
     }
 }
 

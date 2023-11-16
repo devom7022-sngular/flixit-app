@@ -1,8 +1,12 @@
 package com.sngular.flixitApp.data.repository
 
+import android.util.Log
 import com.sngular.flixitApp.data.repository.local.LocationLocalRepository
 import com.sngular.flixitApp.data.repository.remote.LocationRemoteRepository
 import com.sngular.flixitApp.domain.model.bo.LocationBo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
@@ -10,19 +14,13 @@ class LocationRepository @Inject constructor(
     private val local: LocationLocalRepository
 
 ) {
-    private suspend fun getAllRemoteLocations(): List<LocationBo> =
-        remote.getLocations().map { it.toBo() }
-
-    private suspend fun getAllLocalLocations(): List<LocationBo> =
-        local.getLocations().map { it.toBo() }
-
-    suspend fun getAllLocations(): List<LocationBo> {
-        var locations = getAllRemoteLocations()
-        if (locations.isEmpty()) {
-            local.clearLocations()
-            locations = getAllRemoteLocations()
-            local.insertLocations(locations.map { it.toEntity() })
+    internal suspend fun getAllRemoteLocations(callback: (MutableList<LocationBo>) -> Unit) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            remote.getLocations { it ->
+                Log.i("Location callback", it.toString())
+                callback(it)
+            }
         }
-        return locations
     }
 }
