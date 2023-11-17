@@ -7,6 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.sngular.flixitApp.util.Utils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,12 @@ object FirebaseModule {
     @Provides
     fun provideContext(@ApplicationContext appContext: Context): Context {
         return appContext
+    }
+
+    @Singleton
+    @Provides
+    fun provideUtils(context: Context): Utils {
+        return Utils(context)
     }
 
     @Singleton
