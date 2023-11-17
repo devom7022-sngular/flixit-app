@@ -35,29 +35,40 @@ class ProfileFragment : Fragment() {
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        personViewModel.onCreate()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.runOnUiThread {
+            if (!requireActivity().isFinishing && isAdded) {
+                personViewModel.getInfo()
+            }
+        }
+
         personViewModel.personData.observe(requireActivity()) {
             val scope = CoroutineScope(Dispatchers.Main)
             scope.launch {
                 val person = it[0]
 
-                Log.i("personModel", person.toString())
-                Glide.with(view)
-                    .load("${Constants.BASE_URL_IMAGE}${person.profilePath}")
-                    .apply(RequestOptions().override(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT))
-                    .into(binding.ivPoster)
+                activity?.runOnUiThread {
+                    if (!requireActivity().isFinishing && isAdded) {
+                        Glide.with(view)
+                            .load("${Constants.BASE_URL_IMAGE}${person.profilePath}")
+                            .apply(
+                                RequestOptions().override(
+                                    Constants.IMAGE_WIDTH,
+                                    Constants.IMAGE_HEIGHT
+                                )
+                            )
+                            .into(binding.ivPoster)
 
-                binding.tvTitle.text = person.name
-                binding.tvAverage.text = person.knownForDepartment
-                binding.tvRate.text = if (person.gender == "2") "Hombre" else "Mujer"
-                binding.tvUsers.text = person.popularity
-
+                        binding.tvTitle.text = person.name
+                        binding.tvAverage.text = person.knownForDepartment
+                        binding.tvRate.text = if (person.gender == "2") "Hombre" else "Mujer"
+                        binding.tvUsers.text = person.popularity
+                    }
+                }
             }
         }
     }

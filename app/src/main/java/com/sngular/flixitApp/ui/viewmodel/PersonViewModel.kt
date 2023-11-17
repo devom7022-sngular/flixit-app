@@ -19,7 +19,7 @@ class PersonViewModel @Inject constructor(
     val personData = MutableLiveData<List<PersonBo>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun onCreate() {
+    fun getInfo() {
         viewModelScope.launch {
             isLoading.postValue(true)
             val person = getPersonUseCase.getPersonInfo()
