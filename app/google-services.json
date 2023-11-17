@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "685061331825",
+    "project_id": "flixit-50a33",
+    "storage_bucket": "flixit-50a33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685061331825:android:d0518aba1e143e2c01b4d0",
+        "android_client_info": {
+          "package_name": "com.sngular.flixitApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-bTl0ZQ_YbiONqlLvHR-Zz3axEDXiqJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

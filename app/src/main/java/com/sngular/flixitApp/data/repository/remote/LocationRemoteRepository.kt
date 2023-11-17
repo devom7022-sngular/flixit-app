@@ -1,27 +1,56 @@
 package com.sngular.flixitApp.data.repository.remote
 
-import com.sngular.flixitApp.data.model.dto.LocationDto
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import com.sngular.flixitApp.domain.model.bo.LocationBo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LocationRemoteRepository @Inject constructor() {
+class LocationRemoteRepository @Inject constructor(val db: FirebaseFirestore) {
 
-    suspend fun getLocations(): List<LocationDto> {
-        return withContext(Dispatchers.IO) {
-            val response: List<LocationDto> =
-                data()//api.getPopularMovies(Constants.API_KEY)
-            response
+    suspend fun getLocations(callback: (MutableList<LocationBo>) -> Unit) {
+
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            db.collection("locations")
+                .get()
+                .addOnSuccessListener { result ->
+                    run {
+                        var response: MutableList<LocationBo> = mutableListOf()
+                        for (document in result) {
+                            response.add(
+                                LocationBo(
+                                    long = document.data["lat"].toString(),
+                                    lat = document.data["long"].toString(),
+                                    register = document.data["register"].toString(),
+                                )
+                            )
+                        }
+                        callback(response)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
         }
     }
 
-    fun data(): List<LocationDto> {
-        return arrayOf(
-            LocationDto("10.0", "3.5", "2023 - 12 - 10"),
-            LocationDto("29.0", "3", "2023 - 12 - 11"),
-            LocationDto("19.0", "5", "2023 - 12 - 12"),
-            LocationDto("90.0", "3.5", "2023 - 12 - 13"),
-            LocationDto("19.0", "3.5", "2023 - 12 - 14")
-        ).toList()
+    fun setLocationRemote(locationBo: LocationBo) {
+        val location = hashMapOf(
+            "lat" to locationBo.lat,
+            "long" to locationBo.long,
+            "register" to locationBo.register,
+        )
+        db.collection("locations")
+            .add(location)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
     }
 }
