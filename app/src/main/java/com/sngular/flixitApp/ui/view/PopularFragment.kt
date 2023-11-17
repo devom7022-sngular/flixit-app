@@ -35,7 +35,6 @@ class PopularFragment : Fragment() {
     ): View? {
         _binding = FragmentPopularBinding.inflate(inflater, container, false);
 
-
         setupRecycler()
         movieViewModel.onCreate()
         movieViewModel.popularMovies.observe(requireActivity()) {
@@ -73,21 +72,21 @@ class PopularFragment : Fragment() {
     }
 
     private fun setupRecycler() {
-        val lmPopular = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, true)
+        val lmPopular = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvPopularMovies.layoutManager = lmPopular
         moviesAdapter = MoviesAdapter(requireActivity(), arrayListOf()) {
             launchDetail(it)
         }
         binding.rvPopularMovies.adapter = moviesAdapter
 
-        val lmRate = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, true)
+        val lmRate = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvRateMovies.layoutManager = lmRate
         rateMoviesAdapter = MoviesAdapter(requireActivity(), arrayListOf()) {
             launchDetail(it)
         }
         binding.rvRateMovies.adapter = rateMoviesAdapter
 
-        val lmUpcoming = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, true)
+        val lmUpcoming = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvUpcomingMovies.layoutManager = lmUpcoming
         upcomingMoviesAdapter = MoviesAdapter(requireActivity(), arrayListOf()) {
             launchDetail(it)

@@ -16,9 +16,11 @@ import com.sngular.flixitApp.databinding.FragmentProfileBinding
 import com.sngular.flixitApp.ui.viewmodel.MovieViewModel
 import com.sngular.flixitApp.ui.viewmodel.PersonViewModel
 import com.sngular.flixitApp.util.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class ProfileFragment : Fragment() {

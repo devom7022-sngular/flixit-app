@@ -1,8 +1,14 @@
 package com.sngular.flixitApp.ui.view
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,10 +22,18 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.sngular.flixitApp.R
 import com.sngular.flixitApp.databinding.FragmentUploadBinding
+import com.sngular.flixitApp.ui.viewmodel.PicturesViewModel
+import com.sngular.flixitApp.util.gone
+import com.sngular.flixitApp.util.invisible
+import com.sngular.flixitApp.util.isNotNull
+import com.sngular.flixitApp.util.visible
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -39,6 +53,11 @@ class UploadFragment internal constructor() : Fragment() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    private var savedUri: Uri? = null
+
+    private val picturesViewModel: PicturesViewModel by activityViewModels()
+    private val requestPermissionCode = 999
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         safeContext = context
@@ -50,10 +69,10 @@ class UploadFragment internal constructor() : Fragment() {
     ): View {
         _binding = FragmentUploadBinding.inflate(inflater, container, false)
 
+        checkForPermission(safeContext)
+
         return binding.root
     }
-
-    var IS_TAKE_PHOTO = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,10 +94,41 @@ class UploadFragment internal constructor() : Fragment() {
             takePhoto()
         }
 
+        if (savedUri.isNotNull()) {
+            binding.btSave.visible()
+        } else {
+            binding.btSave.gone()
+        }
+
+        binding.btSave.setOnClickListener {
+            savedUri?.let { uri ->
+                picturesViewModel.savePhoto(uri, isSuccessCallback = {
+                    binding.btSave.invisible()
+                    Log.i("Task process", it.toString())
+                    if (it != null) {
+                        notificate(
+                            "Subida exitosa",
+                            "¡La imagen fue almacenada en el storage!",
+                            "IMAGE_ID",
+                            "Imagenes",
+                            R.drawable.ic_image
+                        )
+                    } else {
+                        notificate(
+                            "Error en la subida de la imagen",
+                            "Intente más tarde",
+                            "IMAGE_ID",
+                            "Imagenes",
+                            R.drawable.ic_image
+                        )
+                    }
+                })
+            }
+        }
+
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-//        cameraExecutor = Executors.newCachedThreadPool()
     }
 
     override fun onDestroyView() {
@@ -147,7 +197,8 @@ class UploadFragment internal constructor() : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
+                    binding.btSave.visible()
+                    savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(safeContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
@@ -187,7 +238,7 @@ class UploadFragment internal constructor() : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun getOutputDirectory(): File {
+    private fun getOutputDirectory(): File {
         val mediaDir = activity?.externalMediaDirs?.firstOrNull()?.let {
             File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
         }
@@ -198,7 +249,65 @@ class UploadFragment internal constructor() : Fragment() {
         val TAG = "CameraXFragment"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         internal const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         var isOffline = false // prevent app crash when goes offline
+    }
+
+    fun notificate(
+        title: String,
+        text: String,
+        channelId: String,
+        channelName: String,
+        icImage: Int
+    ) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                lightColor = Color.MAGENTA
+                enableLights(true)
+            }
+
+            val manager =
+                safeContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(safeContext, channelId)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setSmallIcon(icImage)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        with(NotificationManagerCompat.from(safeContext)) {
+
+            if (ActivityCompat.checkSelfPermission(
+                    safeContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return
+            }
+
+            val random = kotlin.math.abs((0..999999999999).random())
+
+            notify(random.toInt(), builder.build())
+        }
+    }
+
+    private fun checkForPermission(context: Context) {
+        if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                requestPermissionCode
+            )
+            return
+        }
     }
 }

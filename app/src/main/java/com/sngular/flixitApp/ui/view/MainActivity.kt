@@ -1,21 +1,25 @@
 package com.sngular.flixitApp.ui.view
 
 import android.Manifest.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
@@ -51,7 +55,8 @@ class MainActivity() : AppCompatActivity() {
     private val fastestInterval: Long = 60000 * 5
     private lateinit var mLastLocation: Location
     private lateinit var mLocationRequest: LocationRequest
-    private val requestPermissionCode = 999
+    private val requestPermissionCode = 888
+    private val requestPermissionCode2 = 999
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +75,9 @@ class MainActivity() : AppCompatActivity() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showAlertMessage()
         }
+
         checkForPermission(this)
+        checkForPermissionNotification(this)
         startLocationUpdates()
     }
 
@@ -82,13 +89,21 @@ class MainActivity() : AppCompatActivity() {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.lastLocation
-            locationChanged(locationResult.lastLocation!!)
+            //locationChanged(locationResult.lastLocation!!)
             latitude = locationResult.lastLocation!!.latitude
             longitude = locationResult.lastLocation!!.longitude
 
             locationViewModel.setLocation(
                 latitude.toString(), longitude.toString(),
                 getCurrentTime()!!
+            )
+
+            notificate(
+                "Ubicación guardada en storage",
+                "¡Su ubicación se ha almacenado ya puede visualizarla!",
+                "LOCATION_ID",
+                "Ubicación",
+                R.drawable.ic_location
             )
         }
     }
@@ -133,22 +148,22 @@ class MainActivity() : AppCompatActivity() {
         )
     }
 
-    private fun checkForPermission(context: Context) {
-        if (context.checkSelfPermission(permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
+    private fun checkForPermission(context: Context): Boolean {
+        return if (context.checkSelfPermission(permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
         ) {
-            return
+            true
         } else {
             ActivityCompat.requestPermissions(
                 this, arrayOf(permission.ACCESS_FINE_LOCATION),
                 requestPermissionCode
             )
-            return
+            false
         }
     }
 
     private fun showAlertMessage() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("The location permission is disabled. Do you want to enable it?")
+        builder.setMessage("El permiso de ubicación esta deshabilitado, desea habilitarlo?")
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 startActivityForResult(
@@ -157,18 +172,24 @@ class MainActivity() : AppCompatActivity() {
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog.cancel()
-                finish()
             }
         val alert: AlertDialog = builder.create()
         alert.show()
     }
 
-    fun locationChanged(location: Location) {
+    /*fun locationChanged(location: Location) {
         mLastLocation = location
         longitude = mLastLocation.longitude
         latitude = mLastLocation.latitude
         locationViewModel.setLocation(latitude.toString(), longitude.toString(), getCurrentTime()!!)
-    }
+        notificate(
+            "Ubicación guardada en storage",
+            "¡Su ubicación se ha almacenado ya puede visualizarla!",
+            "LOCATION_ID",
+            "Ubicación",
+            R.drawable.ic_location
+        )
+    }*/
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -182,6 +203,64 @@ class MainActivity() : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    fun notificate(
+        title: String,
+        text: String,
+        channelId: String,
+        channelName: String,
+        icImage: Int
+    ) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                lightColor = Color.MAGENTA
+                enableLights(true)
+            }
+
+            val manager =
+                baseContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(baseContext, channelId)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setSmallIcon(icImage)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        with(NotificationManagerCompat.from(baseContext)) {
+
+            if (ActivityCompat.checkSelfPermission(
+                    baseContext,
+                    permission.POST_NOTIFICATIONS
+                ) != PERMISSION_GRANTED
+            ) {
+                return
+            }
+
+            val random = kotlin.math.abs((0..999999999999).random())
+
+            notify(random.toInt(), builder.build())
+        }
+    }
+
+    private fun checkForPermissionNotification(context: Context): Boolean {
+        return if (context.checkSelfPermission(permission.POST_NOTIFICATIONS) == PERMISSION_GRANTED
+        ) {
+            true
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(permission.POST_NOTIFICATIONS),
+                requestPermissionCode2
+            )
+            false
         }
     }
 }

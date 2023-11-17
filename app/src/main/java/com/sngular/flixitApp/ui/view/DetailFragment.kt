@@ -26,7 +26,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater, container, false);
-        val view = binding.root;
+        val view = binding.root
 
         arguments?.let {
             val model = it.get("movieBo")
@@ -36,11 +36,13 @@ class DetailFragment : Fragment() {
                 binding.tvRelease.text = movieDetail.releaseDate
                 binding.tvResumeOverview.text = movieDetail.overview
 
-                Glide.with(requireActivity()).load("${Constants.BASE_URL_IMAGE}${movieDetail.posterPath}")
+                Glide.with(requireActivity())
+                    .load("${Constants.BASE_URL_IMAGE}${movieDetail.posterPath}")
                     .apply(RequestOptions().override(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT))
                     .into(binding.ivPoster)
 
-                Glide.with(requireActivity()).load("${Constants.BASE_URL_IMAGE}${movieDetail.backdropPath}")
+                Glide.with(requireActivity())
+                    .load("${Constants.BASE_URL_IMAGE}${movieDetail.backdropPath}")
                     .apply(RequestOptions())
                     .into(binding.ivHeader)
 
