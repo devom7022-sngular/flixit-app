@@ -10,4 +10,8 @@ class GetLocationUseCase @Inject constructor(private val repository: LocationRep
             callback(it)
         })
     }
+
+    fun setLocation(locationBo: LocationBo) {
+        return repository.setLocationService(locationBo)
+    }
 }

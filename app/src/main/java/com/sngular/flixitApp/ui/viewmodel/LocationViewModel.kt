@@ -24,5 +24,15 @@ class LocationViewModel @Inject constructor(
             })
         }
     }
+
+    fun setLocation(latitude: String, longitude: String, currentTime: String) {
+        getLocationUseCase.setLocation(
+            LocationBo(
+                lat = latitude,
+                long = longitude,
+                register = currentTime
+            )
+        )
+    }
 }
 

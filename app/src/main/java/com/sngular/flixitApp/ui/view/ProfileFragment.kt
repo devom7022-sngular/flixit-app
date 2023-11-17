@@ -60,10 +60,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

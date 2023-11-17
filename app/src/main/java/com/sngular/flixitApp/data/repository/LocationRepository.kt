@@ -23,4 +23,11 @@ class LocationRepository @Inject constructor(
             }
         }
     }
+
+    fun setLocationService(locationBo: LocationBo) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            remote.setLocationRemote(locationBo)
+        }
+    }
 }

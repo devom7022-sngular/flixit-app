@@ -37,4 +37,20 @@ class LocationRemoteRepository @Inject constructor(val db: FirebaseFirestore) {
                 }
         }
     }
+
+    fun setLocationRemote(locationBo: LocationBo) {
+        val location = hashMapOf(
+            "lat" to locationBo.lat,
+            "long" to locationBo.long,
+            "register" to locationBo.register,
+        )
+        db.collection("locations")
+            .add(location)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
+    }
 }

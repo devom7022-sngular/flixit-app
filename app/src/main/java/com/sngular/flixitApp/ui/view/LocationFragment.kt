@@ -1,20 +1,25 @@
 package com.sngular.flixitApp.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.sngular.flixitApp.R
 import com.sngular.flixitApp.databinding.FragmentLocationBinding
 import com.sngular.flixitApp.domain.model.bo.LocationBo
 import com.sngular.flixitApp.ui.viewmodel.LocationViewModel
+import com.sngular.flixitApp.util.valueToDouble
+import com.sngular.flixitApp.util.valueToInt
 
 class LocationFragment : Fragment() {
 
@@ -25,9 +30,11 @@ class LocationFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
         locationList.map {
-            val loc = LatLng(it.lat.toDouble(), it.long.toDouble())
-            googleMap.addMarker(MarkerOptions().position(loc).title(it.register))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc))
+            val lat = it.long.toFloat().toDouble()
+            val lng = it.lat.toFloat().toDouble()
+            val latLng = LatLng(lat, lng)
+            googleMap.addMarker(MarkerOptions().position(latLng).title(it.register).flat(true))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         }
     }
 
@@ -38,7 +45,7 @@ class LocationFragment : Fragment() {
     ): View? {
         _binding = FragmentLocationBinding.inflate(inflater, container, false);
         val view = binding.root;
-        locationViewModel.onCreate()
+
         return view
     }
 
