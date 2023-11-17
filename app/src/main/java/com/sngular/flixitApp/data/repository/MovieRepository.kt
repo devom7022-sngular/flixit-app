@@ -4,11 +4,13 @@ import com.sngular.flixitApp.data.repository.local.MovieLocalRepository
 import com.sngular.flixitApp.data.repository.remote.MovieRemoteRepository
 import com.sngular.flixitApp.domain.model.bo.MovieBo
 import com.sngular.flixitApp.util.MOVIE_TYPE
+import com.sngular.flixitApp.util.Utils
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
     private val remote: MovieRemoteRepository,
-    private val local: MovieLocalRepository
+    private val local: MovieLocalRepository,
+    private val utils: Utils,
 ) {
     private suspend fun getAllRemoteMovies(enum: Enum<MOVIE_TYPE>): List<MovieBo> {
         return when (enum) {
@@ -28,8 +30,10 @@ class MovieRepository @Inject constructor(
 
 
     suspend fun getAllPopularMovies(): List<MovieBo> {
-        var movies = getAllLocalMovies(MOVIE_TYPE.POPULAR)
-        if (movies.isEmpty()) {
+        var movies: List<MovieBo>
+        if (!utils.isConnectedToInternet()) {
+            movies = getAllLocalMovies(MOVIE_TYPE.POPULAR)
+        } else {
             local.clearAllPopularMovies()
             movies = getAllRemoteMovies(MOVIE_TYPE.POPULAR)
             local.insertAllPopularMovies(movies.map { it.toPopularEntity() })
@@ -38,18 +42,25 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun getAllRateMovies(): List<MovieBo> {
-        var movies = getAllLocalMovies(MOVIE_TYPE.RATED)
-        if (movies.isEmpty()) {
+        var movies: List<MovieBo>
+
+        if (!utils.isConnectedToInternet()) {
+            movies = getAllLocalMovies(MOVIE_TYPE.RATED)
+        } else {
             local.clearAllRateMovies()
             movies = getAllRemoteMovies(MOVIE_TYPE.RATED)
             local.insertAllRateMovies(movies.map { it.toRateEntity() })
         }
+
         return movies
     }
 
     suspend fun getAllUpcomingMovies(): List<MovieBo> {
-        var movies = getAllLocalMovies(MOVIE_TYPE.UPCOMING)
-        if (movies.isEmpty()) {
+        var movies: List<MovieBo>
+
+        if (!utils.isConnectedToInternet()) {
+            movies = getAllLocalMovies(MOVIE_TYPE.UPCOMING)
+        } else {
             local.clearAllUpcomingMovies()
             movies = getAllRemoteMovies(MOVIE_TYPE.UPCOMING)
             local.insertAllUpcomingMovies(movies.map { it.toUpcomingEntity() })
