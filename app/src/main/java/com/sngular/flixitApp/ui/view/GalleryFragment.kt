@@ -50,7 +50,6 @@ class GalleryFragment : Fragment() {
                 galleryAdapter.list = it!!
                 galleryAdapter.notifyDataSetChanged()
             }
-
         })
 
         return binding.root

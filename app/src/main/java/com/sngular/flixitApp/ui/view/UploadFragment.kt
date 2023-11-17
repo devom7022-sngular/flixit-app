@@ -1,10 +1,12 @@
 package com.sngular.flixitApp.ui.view
 
 import android.Manifest
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
@@ -57,6 +59,7 @@ class UploadFragment internal constructor() : Fragment() {
 
     private val picturesViewModel: PicturesViewModel by activityViewModels()
     private val requestPermissionCode = 999
+    private val requestPermissionCodeSelection = 999
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -101,34 +104,82 @@ class UploadFragment internal constructor() : Fragment() {
         }
 
         binding.btSave.setOnClickListener {
-            savedUri?.let { uri ->
-                picturesViewModel.savePhoto(uri, isSuccessCallback = {
-                    binding.btSave.invisible()
-                    Log.i("Task process", it.toString())
-                    if (it != null) {
-                        notificate(
-                            "Subida exitosa",
-                            "¡La imagen fue almacenada en el storage!",
-                            "IMAGE_ID",
-                            "Imagenes",
-                            R.drawable.ic_image
-                        )
-                    } else {
-                        notificate(
-                            "Error en la subida de la imagen",
-                            "Intente más tarde",
-                            "IMAGE_ID",
-                            "Imagenes",
-                            R.drawable.ic_image
-                        )
-                    }
-                })
+            savedUri?.let { imageUri ->
+                saveInFirebase(imageUri, true)
             }
+        }
+
+        binding.btSelectPhoto.setOnClickListener {
+            openGalleryForImages()
         }
 
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    private fun openGalleryForImages() {
+
+        if (Build.VERSION.SDK_INT < 19) {
+            var intent = Intent()
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(
+                Intent.createChooser(intent, "Choose Pictures"), requestPermissionCodeSelection
+            )
+        } else { // For latest versions API LEVEL 19+
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(intent, requestPermissionCodeSelection);
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == requestPermissionCodeSelection) {
+
+            // if multiple images are selected
+            if (data?.clipData != null) {
+                val count = data.clipData?.itemCount
+
+                for (i in 0 until count!!) {
+                    val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
+                    saveInFirebase(imageUri, false)
+                }
+
+            } else if (data?.data != null) {
+                val imageUri: Uri = data.data!!
+                saveInFirebase(imageUri, false)
+            }
+        }
+    }
+
+    fun saveInFirebase(imageUri: Uri, isPhoto: Boolean) {
+        picturesViewModel.savePhoto(imageUri, isPhoto, isSuccessCallback = {
+            binding.btSave.invisible()
+            Log.i("Task process", it.toString())
+            if (it != null) {
+                notificate(
+                    "Subida exitosa",
+                    "¡La imagen fue almacenada en el storage!",
+                    "IMAGE_ID",
+                    "Imagenes",
+                    R.drawable.ic_image
+                )
+            } else {
+                notificate(
+                    "Error en la subida de la imagen",
+                    "Intente más tarde",
+                    "IMAGE_ID",
+                    "Imagenes",
+                    R.drawable.ic_image
+                )
+            }
+        })
     }
 
     override fun onDestroyView() {

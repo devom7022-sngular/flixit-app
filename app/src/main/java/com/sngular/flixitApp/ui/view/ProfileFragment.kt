@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.sngular.flixitApp.R
 import com.sngular.flixitApp.databinding.FragmentPopularBinding
 import com.sngular.flixitApp.databinding.FragmentProfileBinding
