@@ -116,3 +116,12 @@ fun String?.floatdToDouble(): Double {
         0.0
     }
 }
+
+fun Uri?.isNotNull(): Boolean{
+    return this != null
+}
+
+fun Uri?.isNull(): Boolean{
+    return this == null
+}
+

@@ -1,8 +1,10 @@
 package com.sngular.flixitApp.data.repository.local
 
+import com.sngular.flixitApp.data.model.dao.PersonDao
 import com.sngular.flixitApp.data.model.dao.PopularMovieDao
 import com.sngular.flixitApp.data.model.dao.RateMovieDao
 import com.sngular.flixitApp.data.model.dao.UpcomingMovieDao
+import com.sngular.flixitApp.data.model.entity.PersonEntity
 import com.sngular.flixitApp.data.model.entity.PopularMovieEntity
 import com.sngular.flixitApp.data.model.entity.RateMovieEntity
 import com.sngular.flixitApp.data.model.entity.UpcomingMovieEntity
@@ -11,7 +13,8 @@ import javax.inject.Inject
 class MovieLocalRepository @Inject constructor(
     private val popularMovieDao: PopularMovieDao,
     private val rateMovieDao: RateMovieDao,
-    private val upcomingMovieDao: UpcomingMovieDao
+    private val upcomingMovieDao: UpcomingMovieDao,
+    private val personDao: PersonDao
 ) {
 
     suspend fun getAllPopularMoviesLocal(): List<PopularMovieEntity> =
@@ -44,5 +47,16 @@ class MovieLocalRepository @Inject constructor(
 
     suspend fun clearAllUpcomingMovies() {
         upcomingMovieDao.deleteAllUpcomingMovies()
+    }
+
+    suspend fun getPersonLocal(): List<PersonEntity> =
+        personDao.getPersonInfo()
+
+    suspend fun insertPerson(person: List<PersonEntity>) {
+        personDao.insertPerson(person)
+    }
+
+    suspend fun clearPerson() {
+        personDao.deletePerson()
     }
 }

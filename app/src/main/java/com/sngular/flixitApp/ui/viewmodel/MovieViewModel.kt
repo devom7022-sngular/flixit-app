@@ -31,11 +31,11 @@ class MovieViewModel @Inject constructor(
             }
 
             if (rated.isNotEmpty()) {
-                rateMovies.postValue(popular)
+                rateMovies.postValue(rated)
             }
 
             if (upcoming.isNotEmpty()) {
-                upcomingMovies.postValue(popular)
+                upcomingMovies.postValue(upcoming)
 
             }
 
